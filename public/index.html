@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>URL Shortener</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>URL Shortener</h1>
+    <p class="subtitle">Paste a long URL below and get a short one back.</p>
+
+    <!-- Account section: shows either the login/signup form, or a
+         "logged in as X" status with a logout button and the user's
+         own links. auth.js toggles which of these two is visible. -->
+    <section id="auth-section">
+      <div id="logged-out-view">
+        <h2>Log in or sign up</h2>
+        <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" />
+        <input type="password" id="auth-password" placeholder="password" autocomplete="current-password" />
+        <button id="login-btn" type="button">Log in</button>
+        <button id="signup-btn" type="button">Sign up</button>
+        <p id="auth-error" class="error" hidden></p>
+      </div>
+
+      <div id="logged-in-view" hidden>
+        <p>
+          Logged in as <strong id="logged-in-email"></strong>
+          <button id="logout-btn" type="button">Log out</button>
+        </p>
+
+        <h2>My URLs</h2>
+        <p class="subtitle">Only links you created while logged in.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Short URL</th>
+              <th>Original URL</th>
+              <th>Clicks</th>
+              <th>Created</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="my-url-list"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- The form for submitting a new URL. You must be logged in - script.js
+         checks this and attaches your login token to the request.
+         We stop the form from doing a normal page reload in script.js and
+         handle the submission with fetch() instead. -->
+    <form id="url-form">
+      <input
+        type="text"
+        id="url-input"
+        placeholder="https://example.com/some/really/long/link"
+        autocomplete="off"
+      />
+      <button type="submit">Shorten</button>
+    </form>
+
+    <!-- Errors (e.g. "please enter a valid URL") get shown here. -->
+    <p id="error-message" class="error" hidden></p>
+
+    <!-- Shown briefly after a successful submit, with the new short link. -->
+    <div id="result" class="result" hidden>
+      Short URL:
+      <a id="result-link" href="#" target="_blank" rel="noopener"></a>
+      <button id="copy-btn" type="button">Copy</button>
+    </div>
+
+    <h2>All shortened URLs (everyone's)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Short URL</th>
+          <th>Original URL</th>
+          <th>Clicks</th>
+          <th>Created</th>
+          <th></th>
+        </tr>
+      </thead>
+      <!-- Rows are added here by script.js after fetching /api/urls. -->
+      <tbody id="url-list"></tbody>
+    </table>
+  </main>
+
+  <!-- auth.js must load before script.js, since script.js calls its
+       getToken()/isLoggedIn() functions. -->
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
